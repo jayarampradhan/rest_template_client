@@ -4,7 +4,7 @@ apply plugin: "maven"
 apply plugin: 'maven-publish'
 //apply plugin: "jacoco"
 
-group 'com.intuit.framework'
+group 'com.uimirror.framework'
 version '0.0.1'
 
 repositories {
