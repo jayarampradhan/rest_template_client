@@ -1,0 +1,85 @@
+apply plugin: 'idea'
+apply plugin: "java"
+apply plugin: "maven"
+apply plugin: 'maven-publish'
+//apply plugin: "jacoco"
+
+group 'com.intuit.framework'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+//    repositories {
+//        maven {
+//            url nexusReleaseUrl
+//        }
+//    }
+}
+ext {
+    slf4jVersion = "1.7.7"
+    qosLogBackVersion = "1.1.2"
+    junitVersion = '4.12'
+    janinoVersion = '2.7.7'
+    mockitoVersion = '1.10.19'
+    equalVerifierVersion = '1.7.4'
+    aseertjVersion = '1.7.1'
+    commonLangVersion = '3.3.2'
+    commonsCodecVersion = "1.10"
+    commonColectionVersion = "3.2.1"
+    jsonAssertVersion = '1.2.3'
+    springVersion = "4.1.7.RELEASE"
+    httpClientVersion = "4.5"
+    jacksonVersion = "2.6.0"
+}
+description = "Rest Frame Work."
+targetCompatibility = "1.8"
+sourceCompatibility = "1.8"
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: junitVersion
+    testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
+    testCompile group: 'org.assertj', name: 'assertj-core', version: aseertjVersion
+    testCompile group: 'org.skyscreamer', name: 'jsonassert', version: jsonAssertVersion
+    testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: equalVerifierVersion
+    testCompile (group: 'org.springframework', name: 'spring-test', version: springVersion){
+        exclude group: 'commons-logging', module: 'commons-logging' //by both name and group
+    }
+    //Logging
+    testCompile(group: 'ch.qos.logback', name: 'logback-classic', version: qosLogBackVersion) {
+        exclude group: 'org.slf4j', module: 'slf4j-api' //by both name and group
+    }
+    compile(group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion)
+    testCompile(group: 'ch.qos.logback', name: 'logback-core', version: qosLogBackVersion)
+    testCompile(group: 'org.codehaus.janino', name: 'janino', version: janinoVersion)
+    //Logging End
+
+    //Spring Start
+    compile(group: 'org.springframework', name: 'spring-web', version: springVersion){
+        exclude group: 'org.springframework', module: 'spring-aop' //by both name and group
+        exclude group: 'org.springframework', module: 'spring-expression' //by both name and group
+    }
+    //Spring End
+
+    //Http CLient
+    compile(group: 'org.apache.httpcomponents', name: 'httpclient', version: httpClientVersion)
+
+
+    //<jackson.version>2.6.0</jackson.version>
+    compile(group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion)
+    compile(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion)
+    compile(group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: jacksonVersion)
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+
+    artifacts {
+        archives sourcesJar
+//        archives javadocJar
+    }
+}
+
+
